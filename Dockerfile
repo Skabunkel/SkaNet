@@ -1,7 +1,7 @@
-from ubuntu AS setup
+FROM alpine 
 #Ordering here matters since if we do an add before installing the compiler we install the compiler everytime.
 WORKDIR build
-RUN apt update && apt -y install build-essential clang
+RUN apk add g++ gcc clang musl-dev
 #Add files
 ADD . .
 #Compile the tcp example
