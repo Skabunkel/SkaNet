@@ -130,7 +130,7 @@ int main()
                         status = recvfrom(connections.sockets[i], recvBuff, RECVBUFFCOUNT, 0, &client, &clientSize);
                         if(status != 0)
                         {
-                            if(protocol == IPV4)
+                            /*if(protocol == IPV4)
                             {
                                 struct sockaddr_in *addr_in = (struct sockaddr_in *)&client;
                                 inet_ntop(protocol, &addr_in->sin_addr, addrBuff, addressBuffer);
@@ -139,8 +139,13 @@ int main()
                             {
                                 struct sockaddr_in6 *addr_in6 = (struct sockaddr_in6 *)&client;
                                 inet_ntop(protocol, &addr_in6->sin6_addr, addrBuff, addressBuffer);
+                            }*/
+                            //printf("%d %s\n %s\n", status, addrBuff, recvBuff);
+                            for(int i = 0; i < status; i++)
+                            {
+                                printf("0x%02x ", recvBuff[i]);
                             }
-                            printf("%d %s\n %s\n", status, addrBuff, recvBuff);
+                            printf("\n");
                             memset(recvBuff, 0, status+1);
                         }
                         else
