@@ -66,7 +66,7 @@ int CloseNetwork();
 int SetNoneBlocking(SOCKET socket);
 
 int CloseSocket(SOCKET socket);
-SOCKET CreateTCPSocket(unsigned short port, AddressProtocol socketFamily, const char *bindAddress);
+SOCKET CreateTCPSocket(unsigned short port, AddressProtocol socketFamily, const char *bindAddress, bool isListner);
 
 bool SetSocketReciveBufferSize(SOCKET socket, int bufferSize);
 bool SetSocketSendBufferSize(SOCKET socket, int bufferSize);

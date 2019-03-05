@@ -44,7 +44,7 @@ int CloseSocket(SOCKET socket)
 
 #define PORTSTRSIZE 32
 
-SOCKET CreateTCPSocket(unsigned short port, AddressProtocol socketFamily, const char *bindAddress)
+SOCKET CreateTCPSocket(unsigned short port, AddressProtocol socketFamily, const char *bindAddress, bool isListner)
 {
 	struct addrinfo hints;
 	memset(&hints, 0, sizeof (struct addrinfo)); // make sure the struct is empty
@@ -79,10 +79,8 @@ SOCKET CreateTCPSocket(unsigned short port, AddressProtocol socketFamily, const 
 		}
 	}
 
-	if (listenSocket==INVALID_SOCKET)
-		return INVALID_SOCKET;
-
-	listen(listenSocket, MAXCONNECTIONS);
+	if (listenSocket!=INVALID_SOCKET && isListner)
+		listen(listenSocket, MAXCONNECTIONS);
 
 	return listenSocket;
 }

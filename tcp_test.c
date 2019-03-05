@@ -47,7 +47,7 @@ int main()
     }
     AddressProtocol protocol = IPV4;
 
-    SOCKET listner = CreateTCPSocket(15360, protocol, "localhost");
+    SOCKET listner = CreateTCPSocket(15360, protocol, "localhost", true);
 
 
 
@@ -67,7 +67,6 @@ int main()
     {
         connections.sockets[i] = 0;
     }
-    printf("fd\n");
     int recvCount = 0;
     int peersock = 0;
     FD_SET(listner, &masterSet);
@@ -77,13 +76,11 @@ int main()
 
     const int addressBuffer = 256;
     char addrBuff[addressBuffer];
-    printf("buffers\n");
     memset(&addrBuff, 0, addressBuffer);
     
     memset(recvBuff, 0, RECVBUFFCOUNT);
     fdMax = listner;
     bool found = false;
-    printf("wtf\n");
 
     int maxDf = listner;
 
