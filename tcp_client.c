@@ -20,14 +20,11 @@ int main()
         printf("Cannot create socket\n");
         return 1;
     }
-    struct sockaddr_in clientService;
+    struct sockaddr clientService;
 
-    Resolve((struct sockaddr*)&clientService, protocol, "127.0.0.1", "15360");
-//    clientService.sin_family      = protocol;
-//    clientService.sin_addr.s_addr = inet_addr("127.0.0.1");
-//    clientService.sin_port        = htons(15360);
+    Resolve(&clientService, protocol, "127.0.0.1", "15360");
 
-    status = connect(socket, (struct sockaddr*)&clientService,  sizeof(clientService));
+    status = connect(socket, &clientService,  sizeof(clientService));
     if(status == SOCKET_ERROR)
     {
         printf("Cannot Connect %s\n", strerror(errno));
