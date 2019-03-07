@@ -1,4 +1,5 @@
 #include "skanet.h"
+#include <stdint.h>
 
 #define VALUE_TO_STRING(x) #x
 #define VALUE(x) VALUE_TO_STRING(x)
@@ -146,4 +147,36 @@ bool Resolve(struct sockaddr *result, AddressProtocol protocol, const char *addr
 	free(res);
 
     return true;
+}
+
+bool SendTo(SOCKET socket, const uint8_t *buffer, const int32_t length, int32_t flags, const struct sockaddr *address, int32_t addressSize)
+{
+	int32_t ofset = 0;
+	int32_t left = length;
+	int32_t returnVal = 0;
+	while(ofset < length)
+	{
+		returnVal = sendto(socket, (const char*)(buffer+ofset), left, flags, address, addressSize);
+		left -= returnVal;
+		ofset += returnVal;
+		if(returnVal == SOCKET_ERROR || returnVal == 0)
+			break;
+	}
+	return ofset==length;
+}
+
+int32_t RecvFrom(SOCKET socket, uint8_t *buffer, const int32_t length, int32_t flags, struct sockaddr *address, int32_t *addressSize)
+{
+	int32_t ofset = 0;
+	int32_t left = length;
+	int32_t returnVal = 0;
+	while(ofset < length)
+	{
+		returnVal = recvfrom(socket, (char*)(buffer+ofset), left, flags, address, addressSize);
+		left -= returnVal;
+		ofset += returnVal;
+		if(returnVal == SOCKET_ERROR || returnVal == 0)
+			break;
+	}
+	return ofset;
 }

@@ -72,7 +72,7 @@ int main()
     FD_SET(listner, &masterSet);
 
     const int RECVBUFFCOUNT = 4096;
-    char recvBuff[RECVBUFFCOUNT+1];
+    uint8_t recvBuff[RECVBUFFCOUNT+1];
 
     const int addressBuffer = 256;
     char addrBuff[addressBuffer];
@@ -127,8 +127,8 @@ int main()
                 {
                     if(FD_ISSET(connections.sockets[i], &tmpSet))
                     {
-                        status = recvfrom(connections.sockets[i], recvBuff, RECVBUFFCOUNT, 0, &client, &clientSize);
-                        if(status != 0)
+                        status = RecvFrom(connections.sockets[i], recvBuff, RECVBUFFCOUNT, 0, &client, &clientSize);
+                        if(status > 0)
                         {
                             /*if(protocol == IPV4)
                             {

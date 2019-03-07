@@ -3,6 +3,8 @@
 #include <errno.h>
 #include <stdint.h>
 
+#define DATASIZE 16
+
 int main()
 {
     int status = InitNetwork();
@@ -31,10 +33,16 @@ int main()
         return 1;
     }
 
-    //const int ss = 16;
-    unsigned char data[16] = { 0x00, 0xF6, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f  };
+    uint8_t data[DATASIZE] = { 0x00, 0xf6, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f  };
 
-    send(socket, (char*)data, 16, 0);
+    bool sent = SendTo(socket, (uint8_t*)data, DATASIZE, 0, NULL, 0);
+
+    if(!sent)
+    {
+        printf("Cannot send all data\n");
+        return 1;
+    }
+
     CloseSocket(socket);
 
     CloseNetwork();

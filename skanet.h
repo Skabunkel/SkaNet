@@ -50,7 +50,7 @@
     #define INVALID_SOCKET -1
     #define SOCKET_ERROR -1
 #endif // PLATFORM_OS_WINDOWS
-
+#include <stdint.h>
 typedef enum 
 {
     IPV4 =  AF_INET,
@@ -75,6 +75,8 @@ bool SetSocketHardClose(SOCKET socket);
 int SetNoneBlocking(SOCKET socket);
 bool SetBroadcast(SOCKET socket);
 bool Resolve(struct sockaddr *result, AddressProtocol protocol, const char *address, const char *port);
+bool SendTo(SOCKET socket, const uint8_t *buffer, const int32_t length, int32_t flags, const struct sockaddr *address, int32_t addressSize);
+int32_t RecvFrom(SOCKET socket, uint8_t *buffer, const int32_t length, int32_t flags, struct sockaddr *address, int32_t *addressSize);
 
 
 #endif // _SKANET_H
