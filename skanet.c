@@ -46,21 +46,21 @@ int CloseSocket(SOCKET socket)
 
 SOCKET CreateTCPSocket(unsigned short port, AddressProtocol socketFamily, const char *bindAddress, bool isListner)
 {
-	struct addrinfo hints;
-	memset(&hints, 0, sizeof (struct addrinfo)); // make sure the struct is empty
-	hints.ai_family = socketFamily;     // don't care IPv4 or IPv6
-	hints.ai_socktype = TCP; // TCP sockets
-	hints.ai_flags = AI_PASSIVE;     // fill in my IP for me
+    struct addrinfo hints;
+    memset(&hints, 0, sizeof (struct addrinfo)); // make sure the struct is empty
+    hints.ai_family = socketFamily;     // don't care IPv4 or IPv6
+    hints.ai_socktype = TCP; // TCP sockets
+    hints.ai_flags = AI_PASSIVE;     // fill in my IP for me
 
-	struct addrinfo *servinfo=0, *aip;  // will point to the results
+    struct addrinfo *servinfo=0, *aip;  // will point to the results
 
-	char portStr[PORTSTRSIZE];
-	snprintf(portStr, PORTSTRSIZE, "%hu", port);
+    char portStr[PORTSTRSIZE];
+    snprintf(portStr, PORTSTRSIZE, "%hu", port);
     SOCKET listenSocket;
 
-	getaddrinfo(0, portStr, &hints, &servinfo);
-	for (aip = servinfo; aip != NULL; aip = aip->ai_next)
-	{
+    getaddrinfo(0, portStr, &hints, &servinfo);
+    for (aip = servinfo; aip != NULL; aip = aip->ai_next)
+    {
         // Open socket. The address type depends on what
         // getaddrinfo() gave us.
         listenSocket = socket(aip->ai_family, aip->ai_socktype, aip->ai_protocol);
@@ -80,7 +80,7 @@ SOCKET CreateTCPSocket(unsigned short port, AddressProtocol socketFamily, const 
                 listenSocket=INVALID_SOCKET;
             }
         }
-	}
+    }
 
     if (listenSocket!=INVALID_SOCKET && isListner)
         listen(listenSocket, MAXCONNECTIONS);
@@ -130,9 +130,9 @@ bool Resolve(struct sockaddr *result, AddressProtocol protocol, const char *addr
 
     struct addrinfo hints;
     memset(&hints, 0, sizeof (hints));
-	hints.ai_family = protocol;
-	hints.ai_socktype = TCP;
-	hints.ai_flags = AI_PASSIVE;
+    hints.ai_family = protocol;
+    hints.ai_socktype = TCP;
+    hints.ai_flags = AI_PASSIVE;
 
     struct addrinfo *res = NULL;
     int status = getaddrinfo(address, port, &hints, &res);
@@ -143,34 +143,34 @@ bool Resolve(struct sockaddr *result, AddressProtocol protocol, const char *addr
     result->sa_family = res[0].ai_family;
     memcpy(&result->sa_data, res[0].ai_addr[0].sa_data, 14);
 
-	free(res);
+    free(res);
 
     return true;
 }
 
 bool SendTo(SOCKET socket, const uint8_t *buffer, const int32_t length, int32_t flags, const struct sockaddr *address, int32_t addressSize)
 {
-	int32_t ofset = 0;
-	int32_t left = length;
-	int32_t returnVal = 0;
-	while(ofset < length)
-	{
+    int32_t ofset = 0;
+    int32_t left = length;
+    int32_t returnVal = 0;
+    while(ofset < length)
+    {
         returnVal = sendto(socket, (const char*)(buffer+ofset), left, flags, address, addressSize);
         left -= returnVal;
         ofset += returnVal;
         if(returnVal == SOCKET_ERROR || returnVal == 0)
             break;
-	}
-	return ofset==length;
+    }
+    return ofset==length;
 }
 
 int32_t RecvFrom(SOCKET socket, uint8_t *buffer, const int32_t length, int32_t flags, struct sockaddr *address, int32_t *addressSize)
 {
-	int32_t ofset = 0;
-	int32_t left = length;
-	int32_t returnVal = 0;
-	while(ofset < length)
-	{
+    int32_t ofset = 0;
+    int32_t left = length;
+    int32_t returnVal = 0;
+    while(ofset < length)
+    {
         returnVal = recvfrom(socket, (char*)(buffer+ofset), left, flags, address, addressSize);
         if(returnVal > 0)
         {
@@ -180,6 +180,6 @@ int32_t RecvFrom(SOCKET socket, uint8_t *buffer, const int32_t length, int32_t f
 
         if(returnVal == SOCKET_ERROR || returnVal <= 0)
             break;
-	}
-	return ofset;
+    }
+    return ofset;
 }
