@@ -75,7 +75,9 @@ bool SetSocketHardClose(SOCKET socket);
 int SetNoneBlocking(SOCKET socket);
 bool SetBroadcast(SOCKET socket);
 bool Resolve(struct sockaddr *result, AddressProtocol protocol, const char *address, const char *port);
+// This function requiers a send timmer to be specified for open connections, otherwise you maybe stuck forever.
 bool SendTo(SOCKET socket, const uint8_t *buffer, const int32_t length, int32_t flags, const struct sockaddr *address, int32_t addressSize);
+// This function requiers a recive timmer to be specified for open connections, otherwise you maybe stuck forever.
 int32_t RecvFrom(SOCKET socket, uint8_t *buffer, const int32_t length, int32_t flags, struct sockaddr *address, int32_t *addressSize);
 
 

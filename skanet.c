@@ -82,6 +82,8 @@ SOCKET CreateTCPSocket(unsigned short port, AddressProtocol socketFamily, const 
 			}
 		}
 	}
+	//SO_RCVTIMEO 
+
 
 	if (listenSocket!=INVALID_SOCKET && isListner)
 		listen(listenSocket, MAXCONNECTIONS);
@@ -173,9 +175,15 @@ int32_t RecvFrom(SOCKET socket, uint8_t *buffer, const int32_t length, int32_t f
 	while(ofset < length)
 	{
 		returnVal = recvfrom(socket, (char*)(buffer+ofset), left, flags, address, addressSize);
-		left -= returnVal;
-		ofset += returnVal;
-		if(returnVal == SOCKET_ERROR || returnVal == 0)
+		if(returnVal > 0)
+		{
+			left -= returnVal;
+			ofset += returnVal;
+		}
+		
+		printf("ofset:%i, returnVal:%i\n", ofset, returnVal);
+
+		if(returnVal == SOCKET_ERROR || returnVal <= 0)
 			break;
 	}
 	return ofset;

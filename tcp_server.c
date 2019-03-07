@@ -71,7 +71,7 @@ int main()
     int peersock = 0;
     FD_SET(listner, &masterSet);
 
-    const int RECVBUFFCOUNT = 4096;
+    const int RECVBUFFCOUNT = 512;
     uint8_t recvBuff[RECVBUFFCOUNT+1];
 
     const int addressBuffer = 256;
@@ -83,10 +83,12 @@ int main()
     bool found = false;
 
     int maxDf = listner;
+    
+    struct timeval tv;
+    tv.tv_usec = 500;
 
     while(run)
     {
-     //   printf("LOOPING");
         tmpSet = masterSet;
         status = select(maxDf+1, &tmpSet, NULL, NULL, NULL);
         if(status < 0)
@@ -110,9 +112,10 @@ int main()
                     {
                         connections.sockets[i] = peersock;
                         found = true;
+
+	                    setsockopt(peersock, SOL_SOCKET, SO_RCVTIMEO, (struct timeval *)&tv,sizeof(struct timeval));
+	                    setsockopt(peersock, SOL_SOCKET, SO_SNDTIMEO, (struct timeval *)&tv,sizeof(struct timeval));
                         FD_SET(peersock, &masterSet);
-                        if(fdMax < peersock)
-                            fdMax = peersock;
                         break;
                     }
                 }
@@ -131,7 +134,7 @@ int main()
                         if(status > 0)
                         {
                             /*if(protocol == IPV4)
-                            {
+                            {   TODO a function to get the IP address of a connected party.
                                 struct sockaddr_in *addr_in = (struct sockaddr_in *)&client;
                                 inet_ntop(protocol, &addr_in->sin_addr, addrBuff, addressBuffer);
                             }
