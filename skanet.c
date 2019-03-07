@@ -66,6 +66,9 @@ SOCKET CreateTCPSocket(unsigned short port, AddressProtocol socketFamily, const 
 		listenSocket = socket(aip->ai_family, aip->ai_socktype, aip->ai_protocol);
 		if (listenSocket != INVALID_SOCKET)
 		{
+			if(!isListner)
+				break;
+
 			int ret = bind( listenSocket, aip->ai_addr, (int) aip->ai_addrlen );
 			if (ret>=0)
 			{
@@ -81,6 +84,8 @@ SOCKET CreateTCPSocket(unsigned short port, AddressProtocol socketFamily, const 
 
 	if (listenSocket!=INVALID_SOCKET && isListner)
 		listen(listenSocket, MAXCONNECTIONS);
+
+	free(servinfo);
 
 	return listenSocket;
 }
@@ -116,4 +121,29 @@ bool SetBroadcast(SOCKET socket)
 {
     int sock_opt = 1;
     return setsockopt(socket, SOL_SOCKET, SO_BROADCAST, ( char * ) & sock_opt, sizeof( sock_opt ) ) != SOCKET_ERROR;
+}
+
+bool Resolve(struct sockaddr *result, AddressProtocol protocol, const char *address, const char *port)
+{
+    if(result == NULL)
+        return false;
+
+    struct addrinfo hints;
+    memset(&hints, 0, sizeof (hints));
+	hints.ai_family = protocol;
+	hints.ai_socktype = TCP;
+	hints.ai_flags = AI_PASSIVE;
+
+    struct addrinfo *res = NULL;
+    int status = getaddrinfo(address, port, &hints, &res);
+
+    if(status != 0 || res == NULL)
+        return false;
+
+    result->sa_family = res[0].ai_family;
+    memcpy(&result->sa_data, res[0].ai_addr[0].sa_data, 14);
+
+	free(res);
+
+    return true;
 }

@@ -16,7 +16,12 @@
 #if !defined(MAXCONNECTIONS)
     // One could use SOMAXCONN however its definition verries alot depending on what version we use
     #define MAXCONNECTIONS 5
+#endif // MAXCONNECTIONS
+
+#if MAXCONNECTIONS <= 0
+    #error "MAXCONNECTIONS needs a value higher than 0"
 #endif
+
 #if defined(PLATFORM_OS_WINDOWS)
     #pragma comment(lib, "ws2_32.lib")
     #include <winsock2.h>
@@ -40,8 +45,6 @@
     #include <sys/types.h>
     #include <unistd.h>
 
-
-    
     // defines 
     typedef int SOCKET;    
     #define INVALID_SOCKET -1
@@ -62,10 +65,8 @@ typedef enum
 
 int InitNetwork();
 int CloseNetwork();
-
-int SetNoneBlocking(SOCKET socket);
-
 int CloseSocket(SOCKET socket);
+// I might want to split the creation of the socket and the listen binding.
 SOCKET CreateTCPSocket(unsigned short port, AddressProtocol socketFamily, const char *bindAddress, bool isListner);
 
 bool SetSocketReciveBufferSize(SOCKET socket, int bufferSize);
@@ -73,6 +74,7 @@ bool SetSocketSendBufferSize(SOCKET socket, int bufferSize);
 bool SetSocketHardClose(SOCKET socket);
 int SetNoneBlocking(SOCKET socket);
 bool SetBroadcast(SOCKET socket);
+bool Resolve(struct sockaddr *result, AddressProtocol protocol, const char *address, const char *port);
 
 
-#endif // _RAYNET_H
+#endif // _SKANET_H
