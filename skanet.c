@@ -1,5 +1,4 @@
 #include "skanet.h"
-#include <stdint.h>
 
 #define VALUE_TO_STRING(x) #x
 #define VALUE(x) VALUE_TO_STRING(x)
@@ -40,7 +39,7 @@ int CloseNetwork()
 
 int CloseSocket(SOCKET socket)
 {
-	return _CLOSE(socket);
+    return _CLOSE(socket);
 }
 
 #define PORTSTRSIZE 32
@@ -62,49 +61,49 @@ SOCKET CreateTCPSocket(unsigned short port, AddressProtocol socketFamily, const 
 	getaddrinfo(0, portStr, &hints, &servinfo);
 	for (aip = servinfo; aip != NULL; aip = aip->ai_next)
 	{
-		// Open socket. The address type depends on what
-		// getaddrinfo() gave us.
-		listenSocket = socket(aip->ai_family, aip->ai_socktype, aip->ai_protocol);
-		if (listenSocket != INVALID_SOCKET)
-		{
-			if(!isListner)
-				break;
+        // Open socket. The address type depends on what
+        // getaddrinfo() gave us.
+        listenSocket = socket(aip->ai_family, aip->ai_socktype, aip->ai_protocol);
+        if (listenSocket != INVALID_SOCKET)
+        {
+            if(!isListner)
+            break;
 
-			int ret = bind( listenSocket, aip->ai_addr, (int) aip->ai_addrlen );
-			if (ret>=0)
-			{
-				break;
-			}
-			else
-			{
+            int ret = bind( listenSocket, aip->ai_addr, (int) aip->ai_addrlen );
+            if (ret>=0)
+            {
+                break;
+            }
+            else
+            {
                 _CLOSE(listenSocket);
-				listenSocket=INVALID_SOCKET;
-			}
-		}
+                listenSocket=INVALID_SOCKET;
+            }
+        }
 	}
 
-	if (listenSocket!=INVALID_SOCKET && isListner)
-		listen(listenSocket, MAXCONNECTIONS);
+    if (listenSocket!=INVALID_SOCKET && isListner)
+        listen(listenSocket, MAXCONNECTIONS);
 
-	free(servinfo);
+    free(servinfo);
 
-	return listenSocket;
+    return listenSocket;
 }
 
 bool SetSocketReciveBufferSize(SOCKET socket, int bufferSize)
 {
-	return setsockopt(socket, SOL_SOCKET, SO_RCVBUF, ( char * ) & bufferSize, sizeof ( bufferSize ) ) != SOCKET_ERROR;
+    return setsockopt(socket, SOL_SOCKET, SO_RCVBUF, ( char * ) & bufferSize, sizeof ( bufferSize ) ) != SOCKET_ERROR;
 }
 
 bool SetSocketSendBufferSize(SOCKET socket, int bufferSize)
 {
-	return setsockopt(socket, SOL_SOCKET, SO_SNDBUF, ( char * ) & bufferSize, sizeof ( bufferSize ) ) != SOCKET_ERROR;
+    return setsockopt(socket, SOL_SOCKET, SO_SNDBUF, ( char * ) & bufferSize, sizeof ( bufferSize ) ) != SOCKET_ERROR;
 }
 
 bool SetSocketHardClose(SOCKET socket)
 {
-	int sock_opt=0;
-	return setsockopt(socket, SOL_SOCKET, SO_SNDBUF, ( char * ) & sock_opt, sizeof ( sock_opt ) ) != SOCKET_ERROR;
+    int sock_opt=0;
+    return setsockopt(socket, SOL_SOCKET, SO_SNDBUF, ( char * ) & sock_opt, sizeof ( sock_opt ) ) != SOCKET_ERROR;
 }
 
 
@@ -156,11 +155,11 @@ bool SendTo(SOCKET socket, const uint8_t *buffer, const int32_t length, int32_t 
 	int32_t returnVal = 0;
 	while(ofset < length)
 	{
-		returnVal = sendto(socket, (const char*)(buffer+ofset), left, flags, address, addressSize);
-		left -= returnVal;
-		ofset += returnVal;
-		if(returnVal == SOCKET_ERROR || returnVal == 0)
-			break;
+        returnVal = sendto(socket, (const char*)(buffer+ofset), left, flags, address, addressSize);
+        left -= returnVal;
+        ofset += returnVal;
+        if(returnVal == SOCKET_ERROR || returnVal == 0)
+            break;
 	}
 	return ofset==length;
 }
@@ -172,15 +171,15 @@ int32_t RecvFrom(SOCKET socket, uint8_t *buffer, const int32_t length, int32_t f
 	int32_t returnVal = 0;
 	while(ofset < length)
 	{
-		returnVal = recvfrom(socket, (char*)(buffer+ofset), left, flags, address, addressSize);
-		if(returnVal > 0)
-		{
-			left -= returnVal;
-			ofset += returnVal;
-		}
+        returnVal = recvfrom(socket, (char*)(buffer+ofset), left, flags, address, addressSize);
+        if(returnVal > 0)
+        {
+            left -= returnVal;
+            ofset += returnVal;
+        }
 
-		if(returnVal == SOCKET_ERROR || returnVal <= 0)
-			break;
+        if(returnVal == SOCKET_ERROR || returnVal <= 0)
+            break;
 	}
 	return ofset;
 }
