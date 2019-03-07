@@ -82,8 +82,6 @@ SOCKET CreateTCPSocket(unsigned short port, AddressProtocol socketFamily, const 
 			}
 		}
 	}
-	//SO_RCVTIMEO 
-
 
 	if (listenSocket!=INVALID_SOCKET && isListner)
 		listen(listenSocket, MAXCONNECTIONS);

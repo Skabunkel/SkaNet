@@ -84,9 +84,7 @@ int main()
 
     int maxDf = listner;
     
-    struct timeval tv;
-    tv.tv_usec = 500;
-
+    
     while(run)
     {
         tmpSet = masterSet;
@@ -112,9 +110,7 @@ int main()
                     {
                         connections.sockets[i] = peersock;
                         found = true;
-
-	                    setsockopt(peersock, SOL_SOCKET, SO_RCVTIMEO, (struct timeval *)&tv,sizeof(struct timeval));
-	                    setsockopt(peersock, SOL_SOCKET, SO_SNDTIMEO, (struct timeval *)&tv,sizeof(struct timeval));
+                        SetNoneBlocking(peersock);
                         FD_SET(peersock, &masterSet);
                         break;
                     }
