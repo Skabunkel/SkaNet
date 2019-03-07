@@ -36,8 +36,6 @@ int main()
     int clientSize = sizeof(client);
     memset(&client, 0, clientSize);
     
-    int fdMax = 0;
-
     FD_ZERO(&masterSet);
 
     if(status != 0)
@@ -48,8 +46,6 @@ int main()
     AddressProtocol protocol = IPV4;
 
     SOCKET listner = CreateTCPSocket(15360, protocol, "localhost", true);
-
-
 
     if(listner == INVALID_SOCKET)
     {
@@ -79,11 +75,9 @@ int main()
     memset(&addrBuff, 0, addressBuffer);
     
     memset(recvBuff, 0, RECVBUFFCOUNT);
-    fdMax = listner;
-    bool found = false;
 
+    bool found = false;
     int maxDf = listner;
-    
     
     while(run)
     {
