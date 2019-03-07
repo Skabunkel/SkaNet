@@ -180,8 +180,6 @@ int32_t RecvFrom(SOCKET socket, uint8_t *buffer, const int32_t length, int32_t f
 			left -= returnVal;
 			ofset += returnVal;
 		}
-		
-		printf("ofset:%i, returnVal:%i\n", ofset, returnVal);
 
 		if(returnVal == SOCKET_ERROR || returnVal <= 0)
 			break;
