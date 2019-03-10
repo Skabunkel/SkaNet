@@ -9,5 +9,8 @@ This project is free of any licence and obligations, however i or any other cont
 
 This code is to be considered unsafe for use in any network application, and is therefore used at your own risk.
 
-- [ ] TCP
+- [X] TCP
+    - I'll consider TCP done for now since i have no idea what i need to implement.
+
+
 - [ ] UDP
