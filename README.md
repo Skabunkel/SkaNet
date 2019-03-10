@@ -12,7 +12,7 @@ This code is to be considered unsafe for use in any network application, and is 
 - [X] TCP
 - I'll consider TCP done for now since i have no idea what i need to implement.
 - I mean it works, i can connect send and recive messages and listen for messages, sure its not pritty but meh it works for now.
-- since this isnt supposed to be used with raylib i dont need to wrapp everythin and make it nice and pritty :sparkles:
+- since this isnt supposed to be used with raylib i dont need to wrapp everything and make it nice and pritty :sparkles:
 
 
 - [ ] UDP
