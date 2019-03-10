@@ -10,7 +10,8 @@ This project is free of any licence and obligations, however i or any other cont
 This code is to be considered unsafe for use in any network application, and is therefore used at your own risk.
 
 - [X] TCP
-    - I'll consider TCP done for now since i have no idea what i need to implement.
+- I'll consider TCP done for now since i have no idea what i need to implement.
+- I mean it works, i can connect send and recive messages and listen for messages, sure its not pritty but meh it works for now.
 
 
 - [ ] UDP
