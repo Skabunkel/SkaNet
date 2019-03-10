@@ -22,12 +22,8 @@ int main()
         printf("Cannot create socket\n");
         return 1;
     }
-    struct sockaddr clientService;
-
-    Resolve(&clientService, protocol, "127.0.0.1", "15360");
-
-    status = connect(socket, &clientService,  sizeof(clientService));
-    if(status == SOCKET_ERROR)
+    
+    if(!Connect(socket, protocol, TCP, "localhost", "15360"))
     {
         printf("Cannot Connect %s\n", strerror(errno));
         return 1;
