@@ -11,6 +11,10 @@ This code is to be considered unsafe for use in any network application, and is 
 
 On ice untill SkaHash is done.
 
+unsure when i will be working on this, i want to split TCP and UDP into two files so you can use one without using the other.
+
+
+
 - [X] TCP
 - I'll consider TCP done for now since i have no idea what i need to implement.
 - I mean it works, i can connect send and recive messages and listen for messages, sure its not pritty but meh it works for now.
